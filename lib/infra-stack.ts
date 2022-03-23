@@ -8,6 +8,7 @@ export class InfraStack extends Stack {
     "CodebuildProject",
     {
       environment: {
+        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
         environmentVariables: {
           EXPO_TOKEN: {
             type: BuildEnvironmentVariableType.SECRETS_MANAGER,

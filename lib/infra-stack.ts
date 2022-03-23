@@ -1,16 +1,32 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { Stack } from "aws-cdk-lib";
+import * as codebuild from "aws-cdk-lib/aws-codebuild";
+import { BuildEnvironmentVariableType } from "aws-cdk-lib/aws-codebuild";
 
 export class InfraStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
-    super(scope, id, props);
-
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'InfraQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
-  }
+  public readonly codebuildProject = new codebuild.Project(
+    this,
+    "CodebuildProject",
+    {
+      environment: {
+        environmentVariables: {
+          EXPO_TOKEN: {
+            type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+            // Generate token in the Expo console here: https://expo.dev/settings/access-tokens
+            // Needs to be set in AWS Secrets Manager
+            value: "expo-token",
+          },
+        },
+      },
+      source: codebuild.Source.gitHub({
+        owner: "jmeyers91",
+        repo: "expo-cdk-app",
+        webhook: true,
+        webhookFilters: [
+          codebuild.FilterGroup.inEventOf(
+            codebuild.EventAction.PUSH
+          ).andBranchIs("main"),
+        ],
+      }),
+    }
+  );
 }

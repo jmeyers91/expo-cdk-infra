@@ -7,3 +7,9 @@ bin/**/*.js
 bin/**/*.d.ts
 test/**/*.js
 test/**/*.d.ts
+
+
+# CDK Context & Staging files
+cdk.context.json
+.cdk.staging/
+cdk.out/

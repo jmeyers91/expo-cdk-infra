@@ -3,7 +3,7 @@ import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import { BuildEnvironmentVariableType } from "aws-cdk-lib/aws-codebuild";
 
 export class InfraStack extends Stack {
-  public readonly codebuildProject = new codebuild.Project(
+  public readonly easCodebuildProject = new codebuild.Project(
     this,
     "CodebuildProject",
     {
